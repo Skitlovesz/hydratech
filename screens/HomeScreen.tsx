@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const HomeScreen = () => {
-  // return (
-  //   <View style={styles.container}>
-  //     <Text style={styles.title}>Bem vindo ao pagina inicial</Text>
-  //   </View>
-  // );
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Ola</Text>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
