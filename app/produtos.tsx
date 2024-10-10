@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
+import { NavBar } from '../components/navBar';
 
 export default function Login() {
   const handleLogout = () => {
@@ -15,20 +16,13 @@ export default function Login() {
       <View>
         <Text style={styles.title}>Bem vindo, {usuario}!</Text>
       </View>
-      <TouchableOpacity style={styles.navButton} onPress={handleLogout}>
+      <TouchableOpacity style={{padding:10}} onPress={handleLogout}>
         <Text style={styles.title}>Sair</Text>
       </TouchableOpacity>
-      <View style={styles.navbar}>
-        <Link href="/home" style={styles.navButton}>
-          <Text style={styles.navText}>Página Inicial</Text>
-        </Link>
-        <Link href="/produtos" style={styles.navButton}>
-          <Text style={styles.navText}>Produtos</Text>
-        </Link>
-      </View>
+      <NavBar/>
       <ScrollView>
         <View style={styles.productContainer}>
-          <Image 
+          <Image
             source={require('../assets/imagens/branca.png')}
             style={styles.productImage}
           />
@@ -111,21 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#f5f5f5',
-  },
-  navbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 15,
-    backgroundColor: '#007BFF',
-    borderRadius: 15
-  },
-  navButton: {
-    padding: 10,
-  },
-  navText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
   },
   title: {
     fontSize: 15,

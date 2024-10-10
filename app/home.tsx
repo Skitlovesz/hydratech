@@ -3,6 +3,7 @@ import { Link, useRouter } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
 import { useEffect } from 'react';
 import Toast from 'react-native-toast-message';
+import { NavBar } from '../components/navBar';
 
 export default function Home() {
   const { usuario } = useUsuarioStore();
@@ -25,17 +26,10 @@ export default function Home() {
       <View>
         <Text style={styles.title}>Bem vindo, {usuario}!</Text>
       </View>
-      <TouchableOpacity style={styles.navButton} onPress={handleLogout}>
+      <TouchableOpacity style={{padding:10}} onPress={handleLogout}>
         <Text style={styles.title}>Sair</Text>
       </TouchableOpacity>
-      <View style={styles.navbar}>
-        <TouchableOpacity style={styles.navButton} onPress={() => {}}>
-          <Text style={styles.navText}>Página Inicial</Text>
-        </TouchableOpacity>
-        <Link href="/produtos" style={styles.navButton}>
-          <Text style={styles.navText}>Produtos</Text>
-        </Link>
-      </View>
+      <NavBar/>
       <View style={styles.descriptionContainer}>
         <Text style={styles.descriptionTitle}>HydraTech</Text>
         <Text style={styles.description}>
@@ -74,22 +68,6 @@ const styles = StyleSheet.create({
     color: 'black',
     marginTop: 10,
   },
-  navbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 15,
-    backgroundColor: '#007BFF',
-    borderRadius: 15,
-  },
-  navButton: {
-    padding: 10,
-  },
-  navText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  
   title: {
     fontSize: 15,
     fontWeight: 'bold',
