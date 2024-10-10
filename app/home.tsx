@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image, Button } from 'react-native'; // Adicionando Image aqui
+import { View, Text, TouchableOpacity, StyleSheet, Image, Button } from 'react-native';
 import { Link } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
 import Toast from 'react-native-toast-message';
