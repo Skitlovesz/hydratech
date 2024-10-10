@@ -6,7 +6,7 @@ import Toast from 'react-native-toast-message';
 
 export default function Home() {
   const { usuario } = useUsuarioStore();
-  const router = useRouter(); 
+  const router = useRouter();
   const handleLogout = () => {
     router.replace('/'); 
   };
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  
   title: {
     fontSize: 15,
     fontWeight: 'bold',

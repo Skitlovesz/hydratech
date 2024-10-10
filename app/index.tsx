@@ -35,7 +35,7 @@ export default function Login() {
     if (email === 'email@email.com' && password === '123456') {
         try {
             setUsuario(email);
-              router.replace('/home');
+              router.push('/home');
         } catch (error) {
             Alert.alert('Erro', 'Ocorreu um erro ao tentar acessar a próxima página.');
         }
