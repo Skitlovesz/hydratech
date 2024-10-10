@@ -1,20 +1,13 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import HomeScreen from './screens/HomeScreen';
+// import React from 'react';
+// import { View } from 'react-native';
+// import Toast from 'react-native-toast-message';
+// import { Stack } from 'expo-router';
 
-const Stack = createStackNavigator();
-
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen name='Login' component={LoginScreen} />
-        <Stack.Screen name='Registro' component={RegisterScreen} />
-        <Stack.Screen name='Home' component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+// export function App() {
+//   return (
+//     <View style={{ flex: 1 }}>
+//       <Stack />
+//       <Toast />
+//     </View>
+//   );
+// }
