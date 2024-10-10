@@ -8,12 +8,11 @@ export default function Layout(){
       <Stack>
             <Stack.Screen name="index" options={{ headerTitle: "Login" }} />
             <Stack.Screen name="register" options={{ headerTitle: "Voltar" }} />
-            <Stack.Screen name="home" options={{ headerTitle: "Sair" }} />
-            <Stack.Screen name="produtos" options={{ headerTitle: "Sair" }} />
+            {/* <Stack.Screen name="home" options={{ headerTitle: "Sair" }} /> */}
+            {/* <Stack.Screen name="produtos" options={{ headerTitle: "Voltar" }} /> */}
         </Stack>
       <Toast />
     </>
-
     )
 }
 

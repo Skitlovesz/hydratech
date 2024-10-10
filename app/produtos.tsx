@@ -1,9 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
 
 export default function Login() {
+  const handleLogout = () => {
+    router.replace('/');
+  };
+
   const { usuario } = useUsuarioStore();
   return (
     
@@ -11,6 +15,9 @@ export default function Login() {
       <View>
         <Text style={styles.title}>Bem vindo, {usuario}!</Text>
       </View>
+      <TouchableOpacity style={styles.navButton} onPress={handleLogout}>
+        <Text style={styles.title}>Sair</Text>
+      </TouchableOpacity>
       <View style={styles.navbar}>
         <Link href="/home" style={styles.navButton}>
           <Text style={styles.navText}>Página Inicial</Text>
@@ -19,9 +26,6 @@ export default function Login() {
           <Text style={styles.navText}>Produtos</Text>
         </Link>
       </View>
-
-      {/* <Text style={styles.title}>Suas Garrafas Inteligentes</Text> */}
-
       <ScrollView>
         <View style={styles.productContainer}>
           <Image 
@@ -124,10 +128,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   title: {
-    // fontSize: 28,
-    // fontWeight: 'bold',
-    // textAlign: 'center',
-    // marginVertical: 20,
     fontSize: 15,
     fontWeight: 'bold',
     textAlign:'center',
