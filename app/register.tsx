@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ImageBackground, ScrollView } from 'react-native';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -8,7 +10,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-    const validateEmail = (email: string) => {
+  const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
@@ -31,77 +33,131 @@ export default function Register() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Registrar-se</Text>
+    <ImageBackground
+      source={require('../assets/imagens/background.png')}
+      style={styles.backgroundImage}
+    >
+      <LinearGradient
+        colors={['rgba(0,0,0,0.6)', 'rgba(0,0,0,0.8)']}
+        style={styles.container}
+      >
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          <View style={styles.logoContainer}>
+            <Ionicons name="water" size={60} color="#4FC3F7" />
+            <Text style={styles.title}>Registrar-se</Text>
+          </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Nome"
-        value={name}
-        onChangeText={setName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar Senha"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-      />
+          <View style={styles.inputContainer}>
+            <Ionicons name="person-outline" size={24} color="#4FC3F7" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Nome"
+              placeholderTextColor="#B0BEC5"
+              value={name}
+              onChangeText={setName}
+            />
+          </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
-      </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <Ionicons name="mail-outline" size={24} color="#4FC3F7" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              placeholderTextColor="#B0BEC5"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+          </View>
 
-      <TouchableOpacity style={styles.backToLogin} onPress={() => router.push('/')}>
-        <Text style={styles.linkText}>Voltar para Login</Text>
-      </TouchableOpacity>
-    </View>
+          <View style={styles.inputContainer}>
+            <Ionicons name="lock-closed-outline" size={24} color="#4FC3F7" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Senha"
+              placeholderTextColor="#B0BEC5"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <Ionicons name="lock-closed-outline" size={24} color="#4FC3F7" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirmar Senha"
+              placeholderTextColor="#B0BEC5"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry
+            />
+          </View>
+
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Text style={styles.buttonText}>Cadastrar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.backToLogin} onPress={() => router.push('/')}>
+            <Text style={styles.linkText}>Voltar para Login</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </LinearGradient>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
     justifyContent: 'center',
     padding: 20,
   },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
+    color: '#FFFFFF',
+    marginTop: 10,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 10,
+    marginBottom: 15,
+  },
+  inputIcon: {
+    padding: 10,
   },
   input: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+    flex: 1,
+    color: '#FFFFFF',
+    paddingVertical: 10,
+    paddingRight: 10,
+    fontSize: 16,
   },
   button: {
-    backgroundColor: '#007bff',
-    padding: 12,
-    borderRadius: 8,
+    backgroundColor: '#4FC3F7',
+    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
     marginTop: 20,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: '#FFFFFF',
+    fontSize: 18,
     fontWeight: 'bold',
   },
   backToLogin: {
@@ -109,7 +165,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   linkText: {
-    color: '#007bff',
+    color: '#4FC3F7',
     fontSize: 16,
     fontWeight: 'bold',
   },

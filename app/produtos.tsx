@@ -1,168 +1,213 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
-import { Link, router } from 'expo-router';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, ImageBackground, Dimensions } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
 import { NavBar } from '../components/navBar';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function Login() {
-  const handleLogout = () => {
-    router.replace('/');
+const { width } = Dimensions.get('window');
+const productWidth = (width - 60) / 2;
+
+export default function Produtos() {
+  const router = useRouter();
+  const { usuario } = useUsuarioStore();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
-  const { usuario } = useUsuarioStore();
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleProfile = () => {
+    router.push('/perfil');
+    setIsMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    router.replace('/');
+    setIsMenuOpen(false);
+  };
+
+  const handleHomeReturn = () => {
+    router.push('/home');
+  };
+
+  const products = [
+    { name: 'Garrafa Branca', price: 'R$ 749,90', image: require('../assets/imagens/branca.png'), description: 'Garrafa de água reutilizável com capacidade de 500ml. Ideal para uso diário e sustentável.' },
+    { name: 'Garrafa Azul', price: 'R$ 849,90', image: require('../assets/imagens/azul.png'), description: 'Garrafa de água reutilizável com capacidade de 750ml. Ideal para manter a hidratação por mais tempo.' },
+    { name: 'Garrafa Preta', price: 'R$ 649,90', image: require('../assets/imagens/preta.png'), description: 'Garrafa de água com sensor de temperatura e capacidade de 600ml. Ideal para bebidas quentes e frias.' },
+    { name: 'Garrafa Rosa', price: 'R$ 949,90', image: require('../assets/imagens/rosa.png'), description: 'Garrafa de água inteligente com capacidade de 1L e sistema de autolimpeza. Perfeita para uso prolongado.' },
+    { name: 'Garrafa Vermelha', price: 'R$ 949,90', image: require('../assets/imagens/vermelha.png'), description: 'Garrafa de água inteligente com capacidade de 1L e sistema de autolimpeza. Perfeita para uso prolongado.' },
+  ];
+
   return (
-    
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Bem vindo, {usuario}!</Text>
-      </View>
-      <TouchableOpacity style={{padding:10}} onPress={handleLogout}>
-        <Text style={styles.title}>Sair</Text>
-      </TouchableOpacity>
-      <NavBar/>
-      <ScrollView>
-        <View style={styles.productContainer}>
-          <Image
-            source={require('../assets/imagens/branca.png')}
-            style={styles.productImage}
-          />
-          <Text style={styles.productName}>Garrafa Branca</Text>
-          <Text style={styles.productPrice}>R$ 749,90</Text>
-          <Text style={styles.productDescription}>
-            Garrafa de água reutilizável com capacidade de 500ml. Ideal para uso diário e sustentável.
-          </Text>
-          <TouchableOpacity style={styles.buyButton}>
-            <Text style={styles.buyButtonText}>Comprar Agora</Text>
+    <ImageBackground
+      source={require('../assets/imagens/background.png')}
+      style={styles.backgroundImage}
+    >
+      <LinearGradient
+        colors={['rgba(0,0,0,0.6)', 'rgba(0,0,0,0.8)']}
+        style={styles.container}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
+            <Ionicons name="menu" size={30} color="#4FC3F7" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Produtos</Text>
+          <TouchableOpacity onPress={handleHomeReturn} style={styles.homeButton}>
+            <Ionicons name="home" size={30} color="#4FC3F7" />
           </TouchableOpacity>
         </View>
 
-        <View style={styles.productContainer}>
-          <Image 
-            source={require('../assets/imagens/azul.png')}
-            style={styles.productImage}
-          />
-          <Text style={styles.productName}>Garrafa Azul</Text>
-          <Text style={styles.productPrice}>R$ 849,90</Text>
-          <Text style={styles.productDescription}>
-            Garrafa de água reutilizável com capacidade de 750ml. Ideal para manter a hidratação por mais tempo.
-          </Text>
-          <TouchableOpacity style={styles.buyButton}>
-            <Text style={styles.buyButtonText}>Comprar Agora</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.productContainer}>
-          <Image 
-            source={require('../assets/imagens/preta.png')} 
-            style={styles.productImage}
-          />
-          <Text style={styles.productName}>Garrafa Preta</Text>
-          <Text style={styles.productPrice}>R$ 649,90</Text>
-          <Text style={styles.productDescription}>
-            Garrafa de água com sensor de temperatura e capacidade de 600ml. Ideal para bebidas quentes e frias.
-          </Text>
-          <TouchableOpacity style={styles.buyButton}>
-            <Text style={styles.buyButtonText}>Comprar Agora</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.productContainer}>
-          <Image 
-            source={require('../assets/imagens/rosa.png')}
-            style={styles.productImage}
-          />
-          <Text style={styles.productName}>Garrafa Rosa</Text>
-          <Text style={styles.productPrice}>R$ 949,90</Text>
-          <Text style={styles.productDescription}>
-            Garrafa de água inteligente com capacidade de 1L e sistema de autolimpeza. Perfeita para uso prolongado.
-          </Text>
-          <TouchableOpacity style={styles.buyButton}>
-            <Text style={styles.buyButtonText}>Comprar Agora</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.productContainer}>
-          <Image 
-            source={require('../assets/imagens/vermelha.png')}
-            style={styles.productImage}
-          />
-          <Text style={styles.productName}>Garrafa Vermelha</Text>
-          <Text style={styles.productPrice}>R$ 949,90</Text>
-          <Text style={styles.productDescription}>
-            Garrafa de água inteligente com capacidade de 1L e sistema de autolimpeza. Perfeita para uso prolongado.
-          </Text>
-          <TouchableOpacity style={styles.buyButton}>
-            <Text style={styles.buyButtonText}>Comprar Agora</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </View>
+        {isMenuOpen && (
+          <View style={styles.overlay}>
+            <TouchableOpacity style={styles.backgroundOverlay} onPress={closeMenu} activeOpacity={1} />
+            <View style={styles.menu}>
+              <TouchableOpacity onPress={handleProfile} style={styles.menuItem}>
+                <Ionicons name="person-outline" size={24} color="#4FC3F7" />
+                <Text style={styles.menuItemText}>Perfil</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleLogout} style={styles.menuItem}>
+                <Ionicons name="log-out-outline" size={24} color="#4FC3F7" />
+                <Text style={styles.menuItemText}>Sair</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          <View style={styles.productsGrid}>
+            {products.map((product, index) => (
+              <View key={index} style={styles.productContainer}>
+                <Image
+                  source={product.image}
+                  style={styles.productImage}
+                  accessibilityLabel={`Imagem da ${product.name}`}
+                />
+                <Text style={styles.productName}>{product.name}</Text>
+                <Text style={styles.productPrice}>{product.price}</Text>
+                <TouchableOpacity style={styles.buyButton}>
+                  <Ionicons name="cart-outline" size={20} color="#FFFFFF" style={styles.buttonIcon} />
+                  <Text style={styles.buyButtonText}>Comprar</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </LinearGradient>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    paddingTop: 40,
+  },
+  menuButton: {
+    zIndex: 10,
+  },
+  homeButton: {
+    zIndex: 10,
   },
   title: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    textAlign:'center',
-    marginVertical: 1,
-    color: '#333',
-    textShadowColor: '#aaa',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
-    letterSpacing: 1,
-    backgroundColor:'lightgray',
-    width: 300,
-    borderRadius: 15,
-    alignSelf:'center'
-  },
-  productContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
-  },
-  productImage: {
-    width: 150,
-    height: 150,
-    marginBottom: 15,
-  },
-  productName: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backgroundOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  menu: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    width: 250,
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  menuItemText: {
+    marginLeft: 10,
+    fontSize: 18,
+    color: '#333',
+  },
+  scrollViewContent: {
+    padding: 20,
+  },
+  productsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  productContainer: {
+    width: productWidth,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  productImage: {
+    width: productWidth - 30,
+    height: productWidth - 30,
     marginBottom: 10,
+    resizeMode: 'contain',
+  },
+  productName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
   productPrice: {
-    fontSize: 22,
-    color: '#888',
+    fontSize: 14,
+    color: '#4FC3F7',
     marginBottom: 10,
   },
-  productDescription: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
   buyButton: {
-    backgroundColor: 'green',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 5,
+    backgroundColor: '#4FC3F7',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+  },
+  buttonIcon: {
+    marginRight: 5,
   },
   buyButtonText: {
-    color: '#fff',
-    fontSize: 18,
+    color: '#FFFFFF',
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

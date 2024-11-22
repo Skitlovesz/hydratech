@@ -5,7 +5,10 @@ import Toast from "react-native-toast-message";
 export default function Layout(){
     return(
         <>
-      <Stack>
+      <Stack screenOptions={{
+    headerShown: false
+  }}>
+        
             <Stack.Screen name="index" options={{ headerTitle: "Login" }} />
             <Stack.Screen name="register" options={{ headerTitle: "Voltar" }} />
             <Stack.Screen name="home" options={{ headerTitle: "Sair" }} />
