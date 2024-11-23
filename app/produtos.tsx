@@ -1,18 +1,36 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, ImageBackground, Dimensions, Modal, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
-import { NavBar } from '../components/navBar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 const productWidth = (width - 60) / 2;
 
+type Product = {
+  name: string;
+  price: string;
+  image: any;
+  description: string;
+};
+
 export default function Produtos() {
   const router = useRouter();
   const { usuario } = useUsuarioStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [address, setAddress] = useState('');
+  const [number, setNumber] = useState('');
+  const [complement, setComplement] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [errors, setErrors] = useState({
+    address: '',
+    number: '',
+    complement: '',
+    cpf: '',
+  });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -36,7 +54,40 @@ export default function Produtos() {
     router.push('/home');
   };
 
-  const products = [
+  const handleBuyClick = (product: Product) => {
+    setSelectedProduct(product);
+    setModalVisible(true);
+  };
+
+  const handlePurchase = () => {
+    const newErrors = {
+      address: address ? '' : 'Endereço é obrigatório',
+      number: number ? '' : 'Número é obrigatório',
+      complement: complement ? '' : 'Complemento é obrigatório',
+      cpf: cpf ? '' : 'CPF é obrigatório',
+    };
+
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some(error => error !== '')) {
+      return;
+    }
+
+    console.log('Purchase completed', { selectedProduct, address, number, complement, cpf });
+    setModalVisible(false);
+    setAddress('');
+    setNumber('');
+    setComplement('');
+    setCpf('');
+    setErrors({
+      address: '',
+      number: '',
+      complement: '',
+      cpf: '',
+    });
+  };
+
+  const products: Product[] = [
     { name: 'Garrafa Branca', price: 'R$ 749,90', image: require('../assets/imagens/branca.png'), description: 'Garrafa de água reutilizável com capacidade de 500ml. Ideal para uso diário e sustentável.' },
     { name: 'Garrafa Azul', price: 'R$ 849,90', image: require('../assets/imagens/azul.png'), description: 'Garrafa de água reutilizável com capacidade de 750ml. Ideal para manter a hidratação por mais tempo.' },
     { name: 'Garrafa Preta', price: 'R$ 649,90', image: require('../assets/imagens/preta.png'), description: 'Garrafa de água com sensor de temperatura e capacidade de 600ml. Ideal para bebidas quentes e frias.' },
@@ -89,7 +140,7 @@ export default function Produtos() {
                 />
                 <Text style={styles.productName}>{product.name}</Text>
                 <Text style={styles.productPrice}>{product.price}</Text>
-                <TouchableOpacity style={styles.buyButton}>
+                <TouchableOpacity style={styles.buyButton} onPress={() => handleBuyClick(product)}>
                   <Ionicons name="cart-outline" size={20} color="#FFFFFF" style={styles.buttonIcon} />
                   <Text style={styles.buyButtonText}>Comprar</Text>
                 </TouchableOpacity>
@@ -97,6 +148,61 @@ export default function Produtos() {
             ))}
           </View>
         </ScrollView>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                <Ionicons name="close" size={24} color="#4FC3F7" />
+              </TouchableOpacity>
+              {selectedProduct && (
+                <>
+                  <Image source={selectedProduct.image} style={styles.modalImage} />
+                  <Text style={styles.modalProductName}>{selectedProduct.name}</Text>
+                  <Text style={styles.modalProductPrice}>{selectedProduct.price}</Text>
+                </>
+              )}
+              <TextInput
+                style={[styles.input, errors.address ? styles.inputError : null]}
+                placeholder="Endereço"
+                value={address}
+                onChangeText={setAddress}
+              />
+              {errors.address ? <Text style={styles.errorText}>{errors.address}</Text> : null}
+              <TextInput
+                style={[styles.input, errors.number ? styles.inputError : null]}
+                placeholder="Número"
+                value={number}
+                onChangeText={setNumber}
+                keyboardType="numeric"
+              />
+              {errors.number ? <Text style={styles.errorText}>{errors.number}</Text> : null}
+              <TextInput
+                style={[styles.input, errors.complement ? styles.inputError : null]}
+                placeholder="Complemento"
+                value={complement}
+                onChangeText={setComplement}
+              />
+              {errors.complement ? <Text style={styles.errorText}>{errors.complement}</Text> : null}
+              <TextInput
+                style={[styles.input, errors.cpf ? styles.inputError : null]}
+                placeholder="CPF"
+                value={cpf}
+                onChangeText={setCpf}
+                keyboardType="numeric"
+              />
+              {errors.cpf ? <Text style={styles.errorText}>{errors.cpf}</Text> : null}
+              <TouchableOpacity style={styles.purchaseButton} onPress={handlePurchase}>
+                <Text style={styles.purchaseButtonText}>Finalizar Compra</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </LinearGradient>
     </ImageBackground>
   );
@@ -208,6 +314,67 @@ const styles = StyleSheet.create({
   buyButtonText: {
     color: '#FFFFFF',
     fontSize: 14,
+    fontWeight: 'bold',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    width: '80%',
+    alignItems: 'center',
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+  },
+  modalImage: {
+    width: 150,
+    height: 150,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
+  modalProductName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  modalProductPrice: {
+    fontSize: 16,
+    color: '#4FC3F7',
+    marginBottom: 15,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: '#4FC3F7',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  inputError: {
+    borderColor: 'red',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 5,
+  },
+  purchaseButton: {
+    backgroundColor: '#4FC3F7',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginTop: 10,
+  },
+  purchaseButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });
