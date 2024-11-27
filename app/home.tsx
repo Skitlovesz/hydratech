@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground, Scrol
 import { useRouter } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
 import Toast from 'react-native-toast-message';
-import { NavBar } from '../components/navBar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 

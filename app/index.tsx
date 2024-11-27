@@ -1,9 +1,11 @@
- import React, { useState } from 'react';
+import  React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
 
 export default function Login() {
   const [email, setEmail] = useState('');

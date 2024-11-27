@@ -5,6 +5,7 @@ import { useUsuarioStore } from "../store/usuario-store";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
+
 const { width } = Dimensions.get('window');
 const productWidth = (width - 60) / 2;
 
