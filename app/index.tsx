@@ -1,11 +1,12 @@
-import  React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import { Link, router } from 'expo-router';
 import { useUsuarioStore } from "../store/usuario-store";
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-
+import { auth, firestore } from '../src/config/firebase-config';
+import { FirebaseError } from 'firebase/app';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -34,16 +35,25 @@ export default function Login() {
       Alert.alert('Erro', 'A senha deve ter pelo menos 6 caracteres.');
       return;
     }
-
-    if (email === 'email@email.com' && password === '123456') {
-      try {
-        setUsuario(email);
-        router.push('/home');
-      } catch (error) {
-        Alert.alert('Erro', 'Ocorreu um erro ao tentar acessar a próxima página.');
+  
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setUsuario(userCredential.user.email);
+      router.push('/home');
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            Alert.alert('Erro', 'Email ou senha incorretos.');
+            break;
+          default:
+            Alert.alert('Erro', 'Ocorreu um erro ao fazer login. Tente novamente.');
+        }
+      } else {
+        Alert.alert('Erro', 'Ocorreu um erro inesperado. Tente novamente.');
       }
-    } else {
-      Alert.alert('Erro', 'Login ou senha incorreta!');
+      console.error('Login error:', error);
     }
   };
 
@@ -98,62 +108,62 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginTop: 10,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 10,
-    marginBottom: 15,
-  },
-  inputIcon: {
-    padding: 10,
-  },
-  input: {
-    flex: 1,
-    color: '#FFFFFF',
-    paddingVertical: 10,
-    paddingRight: 10,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: '#4FC3F7',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  registerButton: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  registerButtonText: {
-    color: '#4FC3F7',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
+    backgroundImage: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      padding: 20,
+    },
+    logoContainer: {
+      alignItems: 'center',
+      marginBottom: 40,
+    },
+    title: {
+      fontSize: 36,
+      fontWeight: 'bold',
+      color: '#FFFFFF',
+      marginTop: 10,
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: 'rgba(255,255,255,0.2)',
+      borderRadius: 10,
+      marginBottom: 15,
+    },
+    inputIcon: {
+      padding: 10,
+    },
+    input: {
+      flex: 1,
+      color: '#FFFFFF',
+      paddingVertical: 10,
+      paddingRight: 10,
+      fontSize: 16,
+    },
+    button: {
+      backgroundColor: '#4FC3F7',
+      padding: 15,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginTop: 20,
+    },
+    buttonText: {
+      color: '#FFFFFF',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    registerButton: {
+      marginTop: 15,
+      alignItems: 'center',
+    },
+    registerButtonText: {
+      color: '#4FC3F7',
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+  });
