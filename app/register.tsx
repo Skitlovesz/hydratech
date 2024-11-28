@@ -20,7 +20,6 @@ export default function Register() {
 
   const handleRegister = async () => {
     try {
-      // Validações
       if (!name || !email || !password || !confirmPassword) {
         Alert.alert('Erro', 'Por favor, preencha todos os campos.');
         return;
@@ -33,11 +32,8 @@ export default function Register() {
         Alert.alert('Erro', 'As senhas não coincidem.');
         return;
       }
-
-      // Criar usuário no Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       
-      // Salvar dados adicionais no Firestore
       await setDoc(doc(firestore, 'usuarios', userCredential.user.uid), {
         nome: name,
         email: email,
